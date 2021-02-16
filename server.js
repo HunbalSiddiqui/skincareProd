@@ -3,6 +3,7 @@ const app = require('./app')
 
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser : true,
+    useUnifiedTopology : true,
     useCreateIndex : true,
     useFindAndModify : false
 })
@@ -12,6 +13,7 @@ mongoose.connect(process.env.DATABASE,{
 .catch((err)=>{
     console.log("connection can be done right now.",err)
 })
+
 
 //Port
 const port = 8000;
