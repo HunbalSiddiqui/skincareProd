@@ -1,13 +1,15 @@
 var express = require('express')
 var router = express.Router()
 
-var {getAllUsers, createUser, getUserDetail, updateUser} = require('../controllers/user')
+var {getAllUsers, createUsers, getUserDetail, updateUser, deleteUser} = require('../controllers/user')
 
 router.route('/')
 .get(getAllUsers)
-.post(createUser)
+.post(createUsers)
 
 router.route('/:userId')
 .get(getUserDetail)
-.put(updateUser)
+.patch(updateUser)
+.delete(deleteUser)
+
 module.exports = router
