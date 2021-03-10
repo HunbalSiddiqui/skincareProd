@@ -4,11 +4,11 @@ exports.userSignup = (req,res) => {
     req.body ? 
     User.create(req.body)
     .then((createdUser)=>{
-        return res.status(200).json(createdUser)
+        return res.status(200).json({type:true,Message:"User created successfuly",createdUser})
     })
-    .catch(err=>res.json(err))
+    .catch(err=>res.json({type:false,Message:"Unable to create user",err}))
     :
-    res.json({Message : "Invalid information."})
+    res.json({type:false,Message : "Invalid information."})
 }
 
 exports.userSignin = (req,res) => {
