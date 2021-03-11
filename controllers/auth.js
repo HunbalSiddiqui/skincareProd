@@ -8,7 +8,7 @@ exports.userSignup = (req,res) => {
     })
     .catch(err=>res.json({type:false,Message:"Unable to create user",err}))
     :
-    res.json({type:false,Message : "Invalid information."})
+    res.json({type:false,Message : "Bad Request."})
 }
 
 exports.userSignin = (req,res) => {
@@ -16,7 +16,7 @@ exports.userSignin = (req,res) => {
     User.findOne({email : req.body.email},(err, user)=>{
         if(err || !user || user.password!==req.body.password) 
         {
-            return res.json({Message : "Invalid credentials"})
+            return res.json({type:false,Message : "Invalid credentials",type:false})
         }
         // sign the token using jwt
         const token = jwt.sign({_id: user._id},process.env.SIGN_TOKEN)
@@ -24,10 +24,10 @@ exports.userSignin = (req,res) => {
         res.cookie("token",token,{expire: new Date()+9999});
         //send response to frontend
         const {_id,name,email,role} = user;
-        return res.json({token, user:{_id,name,email,role}})                
+        return res.json({type:true,token, user:{_id,name,email,role}})                
     })
     :
-    res.json({Message : "Invalid credentails."})
+    res.json({Message : "Bad Request.",type:false})
 }
 
 exports.userSignout = (req,res) => {

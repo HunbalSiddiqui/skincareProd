@@ -7,7 +7,7 @@ router.route('/signup')
 .post(userSignup)
 
 router.route('/signin')
-.get(userSignin)
+.post(userSignin)
 
 router.route('/signout')
 .get(userSignout)
