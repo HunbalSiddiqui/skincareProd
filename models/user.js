@@ -29,6 +29,7 @@ const userSchema = new mongoose.Schema({
             default : 0    
         },
         photo: String,
+        passwordChangedAt: Date
 })
 
 // use document middleware for encrypting password
@@ -49,4 +50,15 @@ userSchema.pre('save',async function(next){
 userSchema.methods.correctPaasword = async function (candidatePassword, userPassword){
     return await bcrypt.compare(candidatePassword, userPassword)
 }
+
+userSchema.methods.changedPasswordAfter = function (jwtTimestamp){
+    if(this.passwordChangedAt){
+        const changedTimestamp = parseInt(this.passwordChangedAt.getTime()/1000,10) // converting date into second
+        return jwtTimestamp < changedTimestamp // 100 < 200
+    }
+
+    // False means not changed after issueance of token
+    return false
+}
+
 module.exports = mongoose.model('User',userSchema)
