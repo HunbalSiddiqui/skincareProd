@@ -21,7 +21,8 @@ const userSchema = new mongoose.Schema({
         password : {
             type : String,
             required : [true, 'User must set a password.'],
-            minlength : [6, 'Password must be equal or greater than six characters'] 
+            minlength : [6, 'Password must be equal or greater than six characters'],
+            select: false // password field will not be sent to the client.
         },
         role : {
             type : Number,
@@ -31,7 +32,6 @@ const userSchema = new mongoose.Schema({
 })
 
 // use document middleware for encrypting password
-
 userSchema.pre('save',async function(next){
     // here this refers to the current document/ current user
     // If password is modified
@@ -45,4 +45,8 @@ userSchema.pre('save',async function(next){
     next()
 })
 
+// instance method: which will be available on all docs of certain collection
+userSchema.methods.correctPaasword = async function (candidatePassword, userPassword){
+    return await bcrypt.compare(candidatePassword, userPassword)
+}
 module.exports = mongoose.model('User',userSchema)
