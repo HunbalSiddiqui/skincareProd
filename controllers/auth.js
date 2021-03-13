@@ -2,7 +2,14 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 exports.userSignup = (req,res) => {
     req.body ? 
-    User.create(req.body)
+    // User.create(req.body) : any one could register as admin, this was a big security flaw.
+    // admins shall be created manually through mongodb compass or through separate dedicated route.
+    User.create({
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        password: req.body.password
+    })
     .then((createdUser)=>{
         return res.status(200).json({type:true,Message:"User created successfuly",createdUser})
     })
