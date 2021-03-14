@@ -18,5 +18,8 @@ app.use('/api/v1/users',userRoutes)
 const authRoutes = require('./routes/auth')
 app.use('/api/v1/users/auth',authRoutes)
 
+const blogRoutes = require('./routes/blog')
+app.use('/api/v1/blogs',blogRoutes)
+
 
 module.exports = app

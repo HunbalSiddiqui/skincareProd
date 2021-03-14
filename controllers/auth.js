@@ -63,7 +63,7 @@ exports.userSignin = async(req,res) => {
 exports.userSignout = (req,res) => {
     res.clearCookie("token")//we have cookieParser middleware to use such methods
     res.json({
-        message : "User Signout Successfully..."
+        Message : "User Signout Successfully..."
     })  
 }
 
@@ -83,11 +83,11 @@ exports.protect = async (req,res,next) => {
     // to maintain our pattern of working with promises we will promisify this jwt.verify function
     decoded = await promisify(jwt.verify)(token,process.env.SIGN_TOKEN)        
     } catch (error) {
-    return res.status(401).json({type:false,message:"You are not authorized. Please login to get access."})
+    return res.status(401).json({type:false,message:"Invalid token. Please login again to get access."})
     }
 
     // 3) check if user still exist
-    const currentUser = await User.findById(decoded.id)
+    const currentUser = await User.findById(decoded._id)
     if(!currentUser)
     return res.status(401).json({type:false,message:"This user does not exist anymore."})
     // 4) check if user changed password after the jwt was issued
